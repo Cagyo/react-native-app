@@ -5,17 +5,25 @@ export class InputText extends React.Component {
   state = {
     text: '',
   }
+  
+  handleChange = (text) => {
+    this.setState({text});
+  }
 
-  handleChange = (text) => this.setState({text});
+  handleBlur = (text) => {
+    this.props.onBlur(this.state.text);
+  }
 
   render() {
-    const { item } = this.props;
+    const { defaultValue } = this.props;
 
     return (
       <View style={styles.container}>
         <TextInput
           style={{height: 40, paddingLeft: 10, paddingRight: 10}}
+          onBlur={this.handleBlur}
           onChangeText={this.handleChange}
+          defaultValue={defaultValue}
           value={this.state.text}
         />
       </View>

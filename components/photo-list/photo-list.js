@@ -15,8 +15,10 @@ export const PhotoList = (props) => {
           />
         )
       )}
-      {!items &&
-          <Text>No items</Text>
+      {!items.length &&
+          <View style={styles.noItems}>
+            <Text>No items</Text>
+          </View>
       }
     </View>
   );
@@ -26,8 +28,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexWrap: 'wrap',
-    /* flexDirection: 'row', */
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  noItems: {
+    flex: 1,
+  }
 });

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { PhotoList, Toolbar } from '../components';
 import { ImagePicker } from 'expo';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 
 const toolbarItems = [{
   icon: 'md-add-circle',
@@ -13,6 +14,7 @@ const toolbarItems = [{
   path: 'Profile',
 }];
 
+@connectActionSheet 
 export class HomeScreen extends React.Component {
   state = {
     items: [],
@@ -20,12 +22,23 @@ export class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.addNewImage = this.addNewImage.bind(this);
+    this.addImageFromGallery = this.addImageFromGallery.bind(this);
+    this.addImageFromCamera = this.addImageFromCamera.bind(this);
   }
 
-  async addNewImage () {
+  async addImageFromCamera() {
+    let result = await ImagePicker.launchCameraAsync();
+
+    this.updateItems(result);
+  }
+
+  async addImageFromGallery() {
     let result = await ImagePicker.launchImageLibraryAsync();
-    
+
+    this.updateItems(result);
+  }
+
+  updateItems = (result) => {
     if (result.cancelled) {
       return;
     }
@@ -41,21 +54,42 @@ export class HomeScreen extends React.Component {
     });
   }
 
+  showModal = () => {
+    let options = ['Capture from camera', 'Take from gallery', 'Cancel'];
+
+    this.props.showActionSheetWithOptions(
+      {
+        options,
+      },
+      buttonIndex => {
+        switch (buttonIndex) {
+          case 0:
+            this.addImageFromCamera()
+            break;
+          case 1: 
+            this.addImageFromGallery();
+            break;
+        }
+      }
+    );
+  }
+
   handlePress = (item) => {
     const { navigation } = this.props;
+
     switch (item.path) {
       case 'Profile':
         navigation.navigate(item.path);
         break;
       case 'Create':
-        this.addNewImage();
+        this.showModal();
         break;
     }
   }
 
   render() {
     const { navigation } = this.props;
-    console.log(this.state.items)
+
     return (
       <View style={styles.container}>
         <ScrollView style={styles.mainView}>
