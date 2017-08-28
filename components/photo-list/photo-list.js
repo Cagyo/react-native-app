@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 import { PhotoItem } from './photo-item';
 
@@ -13,16 +14,20 @@ export const PhotoList = (props) => {
             key={item.title}
             item={item}
           />
-        )
+        ),
       )}
       {!items.length &&
-          <View style={styles.noItems}>
-            <Text>No items</Text>
-          </View>
+        <View style={styles.noItems}>
+          <Text>No items</Text>
+        </View>
       }
     </View>
   );
-}
+};
+
+PhotoList.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.shape).isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -34,5 +39,5 @@ const styles = StyleSheet.create({
   },
   noItems: {
     flex: 1,
-  }
+  },
 });

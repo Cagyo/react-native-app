@@ -1,0 +1,56 @@
+{
+    "parser": "babel-eslint",
+    "extends": [
+        "eslint-config-airbnb"
+    ],
+    "plugins": [
+        "react-native"
+    ],
+    "rules": {
+        "linebreak-style": 0,
+        // specify the maximum cyclomatic complexity allowed in a program
+        "complexity": ["error", 5],
+
+        // disallow empty functions, except for standalone funcs/arrows
+        // http://eslint.org/docs/rules/no-empty-function
+        "no-empty-function": ["error", {
+            "allow": [
+                "arrowFunctions"
+            ]
+        }],
+
+        // disallow comparisons to null without a type-checking operator
+        "no-eq-null": "error",
+
+        // disallow implicit type conversions
+        // http://eslint.org/docs/rules/no-implicit-coercion
+        "no-implicit-coercion": ["error", { "allow": [] }],
+
+        // disallow var and named functions in global scope
+        // http://eslint.org/docs/rules/no-implicit-globals
+        "no-implicit-globals": "error",
+
+        // disallow unmodified conditions of loops
+        // http://eslint.org/docs/rules/no-unmodified-loop-condition
+        "no-unmodified-loop-condition": "error",
+
+        // disallow unnecessary .call() and .apply()
+        "no-useless-call": "error",
+
+        // disallow usage of configurable warning terms in comments: e.g. todo
+        "no-warning-comments": "warn",
+
+        // require using Error objects as Promise rejection reasons
+        // http://eslint.org/docs/rules/prefer-promise-reject-errors
+        "prefer-promise-reject-errors": "error",
+        "import/prefer-default-export": 0,
+        "no-use-before-define": 0,
+        "jsx-a11y/href-no-hash": 0,
+        "react/require-default-props": 0,
+        "react/jsx-filename-extension": 0
+    },
+    "env": {
+        "browser": true,
+        "node": true
+    }
+}

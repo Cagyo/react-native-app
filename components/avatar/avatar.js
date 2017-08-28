@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, Image, View, TouchableHighlight, Button } from 'react-native';
 
 export const Avatar = (props) => {
@@ -9,8 +10,8 @@ export const Avatar = (props) => {
       <TouchableHighlight onPress={onPress}>
         <Image
           style={{ width: 80, height: 80 }}
-          source={{ uri: uri }}
-        ></Image>
+          source={{ uri }}
+        />
       </TouchableHighlight>
       <View style={styles.buttonContainer}>
         <Button
@@ -22,7 +23,12 @@ export const Avatar = (props) => {
       </View>
     </View>
   );
-}
+};
+
+Avatar.propTypes = {
+  onPress: PropTypes.func.isRequired,
+  uri: PropTypes.string.isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -36,5 +42,5 @@ const styles = StyleSheet.create({
   button: {
     width: 100,
     height: 40,
-  }
+  },
 });

@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableHighlight, View  } from 'react-native';
+import PropTypes from 'prop-types';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { withHandlers, compose } from 'recompose';
 
 export const toolbarItemEnhance = compose(
   withHandlers({
-    handleClick: (props) => () => {
+    handleClick: props => () => {
       const { item, onPress } = props;
 
       onPress(item);
@@ -15,7 +16,7 @@ export const toolbarItemEnhance = compose(
 
 const Item = (props) => {
   const { item, handleClick } = props;
-  console.log(handleClick);
+
   return (
     <TouchableHighlight underlayColor="#ffffff" onPress={handleClick} style={styles.container}>
       <View style={styles.container}>
@@ -26,7 +27,12 @@ const Item = (props) => {
       </View>
     </TouchableHighlight >
   );
-}
+};
+
+Item.propTypes = {
+  item: PropTypes.shape().isRequired,
+  handleClick: PropTypes.func.isRequired,
+};
 
 export const ToolbarItem = toolbarItemEnhance(Item);
 
@@ -41,5 +47,5 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginLeft: 10,
-  }
+  },
 });

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import PropTypes from 'prop-types';
+import { StyleSheet, View } from 'react-native';
 import { ToolbarItem } from './toolbar-item';
 
 export const Toolbar = (props) => {
@@ -7,18 +8,23 @@ export const Toolbar = (props) => {
 
   return (
     <View style={styles.container}>
-      {items.map(item => 
+      {items.map(item =>
         (
           <ToolbarItem
             key={item.title}
             item={item}
             onPress={onPress}
           />
-        )
+        ),
       )}
     </View>
   );
-}
+};
+
+Toolbar.propTypes = {
+  onPress: PropTypes.func.isRequired,
+  items: PropTypes.arrayOf(PropTypes.shape).isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {

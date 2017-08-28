@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { PhotoList, Toolbar } from '../components';
+import PropTypes from 'prop-types';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { ImagePicker } from 'expo';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
+import { PhotoList, Toolbar } from '../components';
 
 const toolbarItems = [{
   icon: 'md-add-circle',
@@ -14,10 +15,11 @@ const toolbarItems = [{
   path: 'Profile',
 }];
 
-@connectActionSheet 
+@connectActionSheet
 export class HomeScreen extends React.Component {
-  state = {
-    items: [],
+  static propTypes = {
+    showActionSheetWithOptions: PropTypes.func.isRequired,
+    navigation: PropTypes.shape().isRequired,
   }
 
   constructor(props) {
@@ -26,14 +28,18 @@ export class HomeScreen extends React.Component {
     this.addImageFromCamera = this.addImageFromCamera.bind(this);
   }
 
+  state = {
+    items: [],
+  }
+
   async addImageFromCamera() {
-    let result = await ImagePicker.launchCameraAsync();
+    const result = await ImagePicker.launchCameraAsync();
 
     this.updateItems(result);
   }
 
   async addImageFromGallery() {
-    let result = await ImagePicker.launchImageLibraryAsync();
+    const result = await ImagePicker.launchImageLibraryAsync();
 
     this.updateItems(result);
   }
@@ -45,32 +51,34 @@ export class HomeScreen extends React.Component {
 
     this.setState({
       items: [
-        ...this.state.items, 
+        ...this.state.items,
         {
-          title: result.uri, 
-          uri: result.uri
-        }
-      ]
+          title: result.uri,
+          uri: result.uri,
+        },
+      ],
     });
   }
 
   showModal = () => {
-    let options = ['Capture from camera', 'Take from gallery', 'Cancel'];
+    const options = ['Capture from camera', 'Take from gallery', 'Cancel'];
 
     this.props.showActionSheetWithOptions(
       {
         options,
       },
-      buttonIndex => {
+      (buttonIndex) => {
         switch (buttonIndex) {
           case 0:
-            this.addImageFromCamera()
+            this.addImageFromCamera();
             break;
-          case 1: 
+          case 1:
             this.addImageFromGallery();
             break;
+          default:
+            break;
         }
-      }
+      },
     );
   }
 
@@ -84,12 +92,12 @@ export class HomeScreen extends React.Component {
       case 'Create':
         this.showModal();
         break;
+      default:
+        break;
     }
   }
 
   render() {
-    const { navigation } = this.props;
-
     return (
       <View style={styles.container}>
         <ScrollView style={styles.mainView}>
@@ -116,5 +124,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 30,
-  }
+  },
 });

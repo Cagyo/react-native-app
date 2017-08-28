@@ -1,15 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Label, InputText, Avatar } from '../components';
+import PropTypes from 'prop-types';
+import { StyleSheet, View } from 'react-native';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { ImagePicker } from 'expo';
+import { Label, InputText, Avatar } from '../components';
 
 @connectActionSheet
 export class ProfileScreen extends React.Component {
-  state = {
-    avatarUri: 'https://facebook.github.io/react/img/logo_og.png',
-    userName: '',
-  };
+  static propTypes = {
+    showActionSheetWithOptions: PropTypes.func.isRequired,
+  }
 
   constructor(props) {
     super(props);
@@ -17,15 +17,20 @@ export class ProfileScreen extends React.Component {
     this.addImageFromCamera = this.addImageFromCamera.bind(this);
   }
 
+  state = {
+    avatarUri: 'https://facebook.github.io/react/img/logo_og.png',
+    userName: '',
+  };
+
   async addImageFromCamera() {
-    let result = await ImagePicker.launchCameraAsync();
+    const result = await ImagePicker.launchCameraAsync();
 
     this.updateItems(result);
   }
 
   async addImageFromGallery() {
-    let result = await ImagePicker.launchImageLibraryAsync();
-    
+    const result = await ImagePicker.launchImageLibraryAsync();
+
     this.updateItems(result);
   }
 
@@ -35,32 +40,33 @@ export class ProfileScreen extends React.Component {
     }
 
     this.setState({
-      avatarUri: result.uri
+      avatarUri: result.uri,
     });
   }
 
   showModal = () => {
-    let options = ['Capture from camera', 'Take from gallery', 'Cancel'];
+    const options = ['Capture from camera', 'Take from gallery', 'Cancel'];
 
     this.props.showActionSheetWithOptions(
       {
         options,
       },
-      buttonIndex => {
+      (buttonIndex) => {
         switch (buttonIndex) {
           case 0:
-            this.addImageFromCamera()
+            this.addImageFromCamera();
             break;
-          case 1: 
+          case 1:
             this.addImageFromGallery();
             break;
+          default:
+            break;
         }
-      }
+      },
     );
   }
 
   changeUserName = (text) => {
-    console.log(text);
     this.setState({ userName: text });
   }
 
@@ -68,14 +74,14 @@ export class ProfileScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.avatar}>
-          <Avatar 
+          <Avatar
             uri={this.state.avatarUri}
             onPress={this.showModal}
           />
         </View>
         <View style={styles.input}>
           <Label title="User name" />
-          <InputText 
+          <InputText
             onBlur={this.changeUserName}
             defaultValue={this.state.userName}
           />
@@ -96,7 +102,5 @@ const styles = StyleSheet.create({
   avatar: {
     marginBottom: 10,
   },
-  input: {
-    
-  }
+  input: {},
 });
