@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { ImagePicker } from 'expo';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
+import { connect } from 'react-redux';
 import { PhotoList, Toolbar } from '../components';
+import { addToList } from '../ducks/list';
 
 const toolbarItems = [{
   icon: 'md-add-circle',
@@ -15,21 +17,24 @@ const toolbarItems = [{
   path: 'Profile',
 }];
 
+const mapStateToProps = state => ({
+  items: state.list.items,
+});
+
+@connect(mapStateToProps)
 @connectActionSheet
 export class HomeScreen extends React.Component {
   static propTypes = {
     showActionSheetWithOptions: PropTypes.func.isRequired,
     navigation: PropTypes.shape().isRequired,
+    items: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    dispatch: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
     this.addImageFromGallery = this.addImageFromGallery.bind(this);
     this.addImageFromCamera = this.addImageFromCamera.bind(this);
-  }
-
-  state = {
-    items: [],
   }
 
   async addImageFromCamera() {
@@ -45,19 +50,16 @@ export class HomeScreen extends React.Component {
   }
 
   updateItems = (result) => {
+    const { dispatch } = this.props;
+
     if (result.cancelled) {
       return;
     }
 
-    this.setState({
-      items: [
-        ...this.state.items,
-        {
-          title: result.uri,
-          uri: result.uri,
-        },
-      ],
-    });
+    dispatch(addToList({
+      title: result.uri,
+      uri: result.uri,
+    }));
   }
 
   showModal = () => {
@@ -102,7 +104,7 @@ export class HomeScreen extends React.Component {
       <View style={styles.container}>
         <ScrollView style={styles.mainView}>
           <PhotoList
-            items={this.state.items}
+            items={this.props.items}
           />
         </ScrollView>
         <View style={styles.toolbar}>

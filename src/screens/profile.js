@@ -3,12 +3,23 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { ImagePicker } from 'expo';
+import { connect } from 'react-redux';
 import { Label, InputText, Avatar } from '../components';
+import { updateAvatarUri, updateUserName } from '../ducks/user';
 
+const mapStateToProps = state => ({
+  userName: state.user.userName,
+  avatarUri: state.user.avatarUri,
+});
+
+@connect(mapStateToProps)
 @connectActionSheet
 export class ProfileScreen extends React.Component {
   static propTypes = {
     showActionSheetWithOptions: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    avatarUri: PropTypes.string.isRequired,
+    userName: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -17,31 +28,26 @@ export class ProfileScreen extends React.Component {
     this.addImageFromCamera = this.addImageFromCamera.bind(this);
   }
 
-  state = {
-    avatarUri: 'https://facebook.github.io/react/img/logo_og.png',
-    userName: '',
-  };
-
   async addImageFromCamera() {
     const result = await ImagePicker.launchCameraAsync();
 
-    this.updateItems(result);
+    this.updateAvatar(result);
   }
 
   async addImageFromGallery() {
     const result = await ImagePicker.launchImageLibraryAsync();
 
-    this.updateItems(result);
+    this.updateAvatar(result);
   }
 
-  updateItems = (result) => {
+  updateAvatar = (result) => {
+    const { dispatch } = this.props;
+
     if (result.cancelled) {
       return;
     }
 
-    this.setState({
-      avatarUri: result.uri,
-    });
+    dispatch(updateAvatarUri(result.uri));
   }
 
   showModal = () => {
@@ -67,15 +73,19 @@ export class ProfileScreen extends React.Component {
   }
 
   changeUserName = (text) => {
-    this.setState({ userName: text });
+    const { dispatch } = this.props;
+
+    dispatch(updateUserName(text));
   }
 
   render() {
+    const { avatarUri, userName } = this.props;
+
     return (
       <View style={styles.container}>
         <View style={styles.avatar}>
           <Avatar
-            uri={this.state.avatarUri}
+            uri={avatarUri}
             onPress={this.showModal}
           />
         </View>
@@ -83,7 +93,7 @@ export class ProfileScreen extends React.Component {
           <Label title="User name" />
           <InputText
             onBlur={this.changeUserName}
-            defaultValue={this.state.userName}
+            defaultValue={userName}
           />
         </View>
       </View>

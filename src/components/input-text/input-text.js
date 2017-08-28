@@ -10,7 +10,7 @@ export class InputText extends React.Component {
 
   state = {
     text: '',
-  }
+  };
 
   handleChange = (text) => {
     this.setState({ text });
@@ -29,8 +29,7 @@ export class InputText extends React.Component {
           style={{ height: 40, paddingLeft: 10, paddingRight: 10 }}
           onBlur={this.handleBlur}
           onChangeText={this.handleChange}
-          defaultValue={defaultValue}
-          value={this.state.text}
+          value={this.state.text ? this.state.text : defaultValue}
         />
       </View>
     );
