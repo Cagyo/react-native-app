@@ -1,14 +1,15 @@
-export const REQUEST_CURRENT_USER = 'app/REQUEST_CURRENT_USER';
-export const RECEIVE_CURRENT_USER = 'app/RECEIVE_CURRENT_USER';
+export const REQUEST_USER_DATA = 'app/REQUEST_USER_DATA';
+export const REQUEST_USER_DATA_SUCCESS = 'app/REQUEST_USER_DATA_SUCCESS';
+export const REQUEST_USER_DATA_FAIL = 'app/REQUEST_USER_DATA_FAIL';
 export const UPDATE_USERNAME = 'app/UPDATE_USERNAME';
 export const UPDATE_AVATAR_URI = 'app/UPDATE_AVATAR_URI';
 
-export const requestCurrentUser = () => ({
-  type: REQUEST_CURRENT_USER,
+export const requestUserData = () => ({
+  type: REQUEST_USER_DATA,
 });
 
-export const receiveCurrentUser = userModel => ({
-  type: RECEIVE_CURRENT_USER,
+export const receiveUserData = userModel => ({
+  type: REQUEST_USER_DATA_SUCCESS,
   userModel,
 });
 
@@ -23,11 +24,11 @@ export const updateAvatarUri = avatarUri => ({
 });
 
 const actionsLookup = {
-  [REQUEST_CURRENT_USER]: state => ({
+  [REQUEST_USER_DATA]: state => ({
     ...state,
     isFetching: true,
   }),
-  [RECEIVE_CURRENT_USER]: (state, action) => ({
+  [REQUEST_USER_DATA_SUCCESS]: (state, action) => ({
     ...state,
     ...action.userModel,
     isFetching: false,

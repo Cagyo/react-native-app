@@ -1,15 +1,15 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import {
-  REQUEST_CURRENT_USER,
-  receiveCurrentUser,
+  REQUEST_USER_DATA,
+  receiveUserData,
 } from '../ducks/user';
 
 const requestUser = function* requestUser() {
-  const user = 'Username';
+  // request
 
-  yield put(receiveCurrentUser(user));
+  yield put(receiveUserData({}));
 };
 
 export const watchLoadCurrentUser = function* watchLoadCurrentUser() {
-  yield takeLatest(REQUEST_CURRENT_USER, requestUser);
+  yield takeLatest(REQUEST_USER_DATA, requestUser);
 };
