@@ -1,8 +1,15 @@
 {
   "expo": {
+    "name": "React native app",
+    "icon": "./assets/app-icon.png",
+    "version": "1.0.0",
+    "slug": "react-native-app",
     "sdkVersion": "20.0.0",
     "packagerOpts": {
       "assetExts": ["ttf"]
+    },
+    "android": {
+      "package": "com.berliziev.reactnativeapp"
     }
   }
 }

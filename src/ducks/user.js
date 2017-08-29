@@ -44,7 +44,7 @@ const actionsLookup = {
 };
 
 export const user = function user(state = {
-  userName: 'Username3',
+  userName: 'Username',
   avatarUri: 'https://facebook.github.io/react/img/logo_og.png',
 }, action) {
   if (typeof actionsLookup[action.type] === 'function') return actionsLookup[action.type](state, action);
